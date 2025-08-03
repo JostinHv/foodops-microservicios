@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: reniec-config
+  namespace: reniec-microservice
+data:
+  HOST: "0.0.0.0"
+  PORT: "8080"
+  DEBUG: "false"
+  LOG_LEVEL: "INFO"
+  DECOLECTA_BASE_URL: "https://api.decolecta.com" 

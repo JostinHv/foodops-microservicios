@@ -1,0 +1,309 @@
+# foodops-api
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: foodops-api
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: foodops-api
+  template:
+    metadata:
+      labels:
+        app: foodops-api
+    spec:
+      containers:
+        - name: foodops-api
+          image: gcr.io/appnube2025-459114/foodops-api:latest
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: foodops-api-config
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "400m"
+            limits:
+              memory: "1024Mi"
+              cpu: "600m"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - /bin/bash
+                  - -c
+                  - |
+                    sleep 5
+                    php artisan cache:clear || true
+                    php artisan config:cache || true
+                    php artisan storage:link --force || true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: foodops-api
+  annotations:
+    cloud.google.com/neg: '{"ingress": true}'
+spec:
+  selector:
+    app: foodops-api
+  type: ClusterIP
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8080
+# foodops-api-configmap
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: foodops-api-config
+data:
+  APP_NAME: "Laravel"
+  APP_ENV: "local"
+  APP_KEY: "base64:jlCVkXNfKHIZNGkqeMSG73kcjSDbT6NrcuMEVeSTmAM:"
+  APP_DEBUG: "true"
+  APP_URL: "http://34.49.155.249"
+
+  APP_LOCALE: "en"
+  APP_FALLBACK_LOCALE: "en"
+  APP_FAKER_LOCALE: "en_US"
+
+  APP_MAINTENANCE_DRIVER: "file"
+
+  PHP_CLI_SERVER_WORKERS: "4"
+
+  BCRYPT_ROUNDS: "12"
+
+  LOG_CHANNEL: "stack"
+  LOG_STACK: "single"
+  LOG_DEPRECATIONS_CHANNEL: "null"
+  LOG_LEVEL: "debug"
+
+  DB_CONNECTION: "mysql"
+  DB_HOST: "34.46.211.202"
+  DB_PORT: "3306"
+  DB_DATABASE: "foodops_db"
+  DB_USERNAME: "root"
+  DB_PASSWORD: "123456"
+
+  SESSION_DRIVER: "file"
+  SESSION_LIFETIME: "120"
+  SESSION_ENCRYPT: "false"
+  SESSION_PATH: "/"
+  SESSION_DOMAIN: "34.49.155.249"
+  SESSION_SECURE_COOKIE: "false"
+
+  FILESYSTEM_DISK: "local"
+  QUEUE_CONNECTION: "sync"
+
+  CACHE_STORE: "file"
+
+  MEMCACHED_HOST: "127.0.0.1"
+
+  REDIS_CLIENT: "phpredis"
+  REDIS_HOST: "127.0.0.1"
+  REDIS_PASSWORD: "null"
+  REDIS_PORT: "6379"
+
+  MAIL_MAILER: "log"
+  MAIL_SCHEME: "null"
+  MAIL_HOST: "127.0.0.1"
+  MAIL_PORT: "2525"
+  MAIL_USERNAME: "null"
+  MAIL_PASSWORD: "null"
+  MAIL_FROM_ADDRESS: "hello@example.com"
+  MAIL_FROM_NAME: "Laravel"
+
+  AWS_ACCESS_KEY_ID: ""
+  AWS_SECRET_ACCESS_KEY: ""
+  AWS_DEFAULT_REGION: "us-east-1"
+  AWS_BUCKET: ""
+  AWS_USE_PATH_STYLE_ENDPOINT: "false"
+
+  VITE_APP_NAME: "Laravel"
+
+  JWT_SECRET: "2SJ2FFG9lXIqoU8iXLD7wLUp5gza85RpzBKSm1NTBYKBKqLx6IDF2zl3eLKgSAKg"
+
+  BROADCAST_CONNECTION: "pusher"
+
+  PUSHER_APP_ID: "2005814"
+  PUSHER_APP_KEY: "1dbba895a082bacdf508"
+  PUSHER_APP_SECRET: "f16a701035fe4d3ff63b"
+  PUSHER_APP_CLUSTER: "sa1"
+  PUSHER_PORT: "443"
+  PUSHER_SCHEME: "https"
+
+  VITE_PUSHER_APP_KEY: "1dbba895a082bacdf508"
+  VITE_PUSHER_APP_CLUSTER: "sa1"
+  VITE_PUSHER_HOST: "${PUSHER_HOST}"
+  VITE_PUSHER_PORT: "443"
+  VITE_PUSHER_SCHEME: "https"
+
+# foodops-api-ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: foodops-api-ingress
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: foodops-api
+                port:
+                  number: 80
+
+
+# email-microservice
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: email-microservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: email-microservice
+  template:
+    metadata:
+      labels:
+        app: email-microservice
+    spec:
+      containers:
+      - name: email-microservice
+        image: gcr.io/appnube2025-459114/email-microservice:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: MAILTRAP_HOST
+          value: "sandbox.smtp.mailtrap.io"
+        - name: MAILTRAP_PORT
+          value: "2525"
+        - name: MAILTRAP_USERNAME
+          value: "26a46dc3a687a0"
+        - name: MAILTRAP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: email-secrets
+              key: mailtrap-password
+        - name: OWNER_EMAIL
+          value: "admin@foodops.com"
+        - name: FROM_EMAIL
+          value: "noreply@foodops.com"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "300m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /email-service/api/v1/contact/health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /email-service/api/v1/contact/health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: email-microservice
+spec:
+  selector:
+    app: email-microservice
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP
+# reniec-microservice
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reniec-microservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reniec-microservice
+  template:
+    metadata:
+      labels:
+        app: reniec-microservice
+    spec:
+      containers:
+      - name: reniec-microservice
+        image: gcr.io/appnube2025-459114/reniec-microservice:latest
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+        livenessProbe:
+          httpGet:
+            path: /api/v1/reniec/health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /api/v1/reniec/health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: reniec-microservice
+spec:
+  selector:
+    app: reniec-microservice
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP
+
+

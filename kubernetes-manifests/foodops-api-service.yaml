@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: foodops-api
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: foodops-api
+  template:
+    metadata:
+      labels:
+        app: foodops-api
+    spec:
+      containers:
+      - name: foodops-api
+        image: gcr.io/appnube2025-459114/foodops-api:latest
+        ports:
+        - containerPort: 8080
+        envFrom:
+        - configMapRef:
+            name: foodops-api-config
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "400m"
+          limits:
+            memory: "1024Mi"
+            cpu: "600m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        lifecycle:
+          postStart:
+            exec:
+              command:
+              - /bin/bash
+              - -c
+              - |
+                sleep 5
+                php artisan cache:clear || true
+                php artisan config:cache || true
+                php artisan storage:link --force || true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: foodops-api
+  annotations:
+    cloud.google.com/neg: '{"ingress": true}'
+spec:
+  selector:
+    app: foodops-api
+  type: ClusterIP
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8080

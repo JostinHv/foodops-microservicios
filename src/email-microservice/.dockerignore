@@ -1,0 +1,42 @@
+# Archivos de Maven
+target/
+!target/*.jar
+!target/classes/
+!target/test-classes/
+
+# Archivos de IDE
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de Git
+.git/
+.gitignore
+
+# Archivos de logs
+*.log
+logs/
+
+# Archivos temporales
+*.tmp
+*.temp
+
+# Archivos de configuración local
+.env
+.env.local
+.env.*.local
+
+# Archivos de test
+src/test/
+
+# Archivos de Maven wrapper (se copian explícitamente)
+!mvnw
+!mvnw.cmd
+!.mvn/ 

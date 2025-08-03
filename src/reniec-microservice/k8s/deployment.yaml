@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reniec-microservice
+  namespace: reniec-microservice
+  labels:
+    app: reniec-microservice
+    version: v1.0.0
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: reniec-microservice
+  template:
+    metadata:
+      labels:
+        app: reniec-microservice
+        version: v1.0.0
+    spec:
+      containers:
+      - name: reniec-api
+        image: gcr.io/PROJECT_ID/reniec-microservice:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          name: http
+        env:
+        - name: DECOLECTA_API_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: reniec-secrets
+              key: DECOLECTA_API_TOKEN
+        - name: HOST
+          valueFrom:
+            configMapKeyRef:
+              name: reniec-config
+              key: HOST
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: reniec-config
+              key: PORT
+        - name: DEBUG
+          valueFrom:
+            configMapKeyRef:
+              name: reniec-config
+              key: DEBUG
+        - name: LOG_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              name: reniec-config
+              key: LOG_LEVEL
+        - name: DECOLECTA_BASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: reniec-config
+              key: DECOLECTA_BASE_URL
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /api/v1/reniec/health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /api/v1/reniec/health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+      restartPolicy: Always 
