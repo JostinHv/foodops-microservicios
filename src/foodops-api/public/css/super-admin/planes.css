@@ -1,0 +1,475 @@
+/* Estilos para la vista de planes */
+.plan-card {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-shadow);
+    transition: var(--transition-base);
+    height: 100%;
+}
+
+.plan-card:hover {
+    box-shadow: var(--card-shadow-hover);
+    transform: translateY(-2px);
+}
+
+.plan-header {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    padding: 1.5rem;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    text-align: center;
+}
+
+.plan-body {
+    padding: 1.5rem;
+}
+
+.plan-price {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.plan-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.plan-features li {
+    padding: 0.5rem 0;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+}
+
+.plan-features li i {
+    color: var(--success-color);
+    margin-right: 0.5rem;
+}
+
+.plan-footer {
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.plan-btn {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    transition: var(--transition-base);
+    width: 100%;
+}
+
+.plan-btn:hover {
+    background-color: var(--primary-dark);
+    color: var(--text-light);
+}
+
+.plan-badge {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+    display: inline-block;
+}
+
+/* Sobrescribir colores de Bootstrap */
+.bg-primary {
+    background-color: var(--primary-color) !important;
+}
+
+.bg-success {
+    background-color: var(--accent-color) !important;
+}
+
+.bg-warning {
+    background-color: var(--warning-color) !important;
+}
+
+.bg-danger {
+    background-color: var(--danger-color) !important;
+}
+
+.bg-info {
+    background-color: var(--secondary-color) !important;
+}
+
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.text-success {
+    color: var(--success-color) !important;
+}
+
+.text-warning {
+    color: var(--warning-color) !important;
+}
+
+.text-danger {
+    color: var(--danger-color) !important;
+}
+
+.text-info {
+    color: var(--info-color) !important;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--text-light);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+    color: var(--text-light);
+}
+
+.btn-success {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+    color: var(--text-light);
+}
+
+.btn-success:hover {
+    background-color: var(--success-dark);
+    border-color: var(--success-dark);
+    color: var(--text-light);
+}
+
+.btn-warning {
+    background-color: var(--warning-color);
+    border-color: var(--warning-color);
+    color: var(--text-dark);
+}
+
+.btn-warning:hover {
+    background-color: var(--warning-dark);
+    border-color: var(--warning-dark);
+    color: var(--text-dark);
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    border-color: var(--danger-color);
+    color: var(--text-light);
+}
+
+.btn-danger:hover {
+    background-color: var(--danger-dark);
+    border-color: var(--danger-dark);
+    color: var(--text-light);
+}
+
+.btn-info {
+    background-color: var(--info-color);
+    border-color: var(--info-color);
+    color: var(--text-dark);
+}
+
+.btn-info:hover {
+    background-color: var(--info-dark);
+    border-color: var(--info-dark);
+    color: var(--text-dark);
+}
+
+/* Estilos para el modal */
+.modal-content {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-shadow);
+}
+
+.modal-header {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    border-top: 1px solid var(--border-color);
+    padding: 1rem;
+}
+
+/* Estilos para formularios */
+.form-label {
+    color: var(--text-color);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(var(--primary-rgb), 0.25);
+}
+
+.input-group-text {
+    background-color: var(--light-bg);
+    border-color: var(--border-color);
+    color: var(--text-color);
+}
+
+/* Estilos para tarjetas */
+.card.text-center {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+}
+
+.card.text-center .card-body {
+    padding: 1.5rem;
+}
+
+.card.text-center h3 {
+    color: var(--primary-color);
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.card.text-center .fw-bold {
+    color: var(--text-color);
+}
+
+.card.text-center small {
+    color: var(--text-muted);
+}
+
+/* Estilos para botones */
+.btn {
+    transition: var(--transition-base);
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--text-light);
+}
+
+.btn-outline-danger:hover {
+    background-color: var(--danger-color);
+    border-color: var(--danger-color);
+    color: var(--text-light);
+}
+
+/* Estilos para alertas */
+.alert {
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.alert-info {
+    background-color: var(--light-bg);
+    border-color: var(--primary-light);
+    color: var(--text-dark);
+}
+
+/* Estilos para iconos */
+.bi {
+    vertical-align: middle;
+}
+
+[data-bs-toggle="tooltip"] {
+    cursor: pointer;
+}
+
+/* Estilos para badges */
+.badge {
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+}
+
+/* Estilos para el contenedor de características */
+#caracteristicas-container .input-group {
+    margin-bottom: 0.75rem;
+}
+
+#caracteristicas-container .input-group:last-child {
+    margin-bottom: 0;
+}
+
+/* Estilos para feedback de validación */
+.invalid-feedback {
+    color: var(--danger-color);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+.valid-feedback {
+    color: var(--success-color);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* Media queries */
+@media (max-width: 768px) {
+    .plan-card {
+        margin-bottom: 1.5rem;
+    }
+
+    .plan-header {
+        padding: 1rem;
+    }
+
+    .plan-body {
+        padding: 1rem;
+    }
+
+    .plan-footer {
+        padding: 1rem;
+    }
+
+    .plan-price {
+        font-size: 1.5rem;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.plan-card {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Estilos para el modal */
+.modal-content {
+    border: none;
+    box-shadow: var(--card-shadow);
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    border-top: 1px solid var(--border-color);
+}
+
+/* Estilos para formularios */
+.form-label {
+    font-weight: 500;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(var(--primary-rgb), 0.25);
+}
+
+.input-group-text {
+    background-color: var(--light-bg);
+}
+
+/* Estilos para tarjetas */
+.card.text-center {
+    border: none;
+}
+
+.card.text-center .card-body {
+    padding: 2rem;
+}
+
+.card.text-center h3 {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+}
+
+.card.text-center .fw-bold {
+    font-size: 1.25rem;
+}
+
+.card.text-center small {
+    color: var(--text-muted);
+}
+
+/* Estilos para botones */
+.btn {
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+}
+
+.btn-outline-danger:hover {
+    background-color: var(--danger-color);
+    color: var(--text-light);
+}
+
+/* Estilos para alertas */
+.alert {
+    border: none;
+    border-radius: var(--border-radius);
+}
+
+.alert-info {
+    background-color: var(--primary-light);
+    color: var(--text-dark);
+}
+
+/* Estilos para iconos */
+.bi {
+    font-size: 1.1em;
+}
+
+[data-bs-toggle="tooltip"] {
+    cursor: help;
+}
+
+/* Estilos para badges */
+.badge {
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+}
+
+/* Estilos para el contenedor de características */
+#caracteristicas-container .input-group {
+    margin-bottom: 0.75rem;
+}
+
+#caracteristicas-container .input-group:last-child {
+    margin-bottom: 0;
+}
+
+/* Estilos para feedback de validación */
+.invalid-feedback {
+    font-size: 0.875rem;
+}
+
+.valid-feedback {
+    font-size: 0.875rem;
+}

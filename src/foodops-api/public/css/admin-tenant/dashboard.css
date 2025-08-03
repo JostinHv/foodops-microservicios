@@ -1,0 +1,10 @@
+.card h6 {
+    font-weight: 600;
+}
+
+.card .bg-light{
+    height:200px; 
+    display:flex; 
+    align-items:center; 
+    justify-content:center;
+}
