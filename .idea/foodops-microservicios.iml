@@ -3,6 +3,11 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src/foodops-api" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/src/email-microservice/.idea" />
+      <excludeFolder url="file://$MODULE_DIR$/src/email-microservice/.vscode" />
+      <excludeFolder url="file://$MODULE_DIR$/src/email-microservice/target" />
+      <excludeFolder url="file://$MODULE_DIR$/src/reniec-microservice/.idea" />
+      <excludeFolder url="file://$MODULE_DIR$/src/reniec-microservice/.venv" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
